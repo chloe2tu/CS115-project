@@ -1,0 +1,56 @@
+publicTextFile='musicrecplus.txt' # Where we store the usernames and preferences for users that are not private (choose to show their name).
+privateTextFile='musicrecplus_private.txt' # Where we store the preferences for users that are private (choose to omit their name with a '$' symbol.
+
+def menu(userName,publicTextData,userPreference,privateTextData):
+    """Prints out menu interface for user and allows user to navigate through interface. (Function done by Adib)"""
+    n  = True
+    while (n==True):
+        print("Enter a letter to choose an option :")
+        print("e - Enter preferences") 
+        print("r - Get recommendations")
+        print("p - Show most popular artists")
+        print("h - How popular is the most popular")
+        print("m - Which user has the most likes")
+        print("d - Delete preferences")
+        print("s - Show preferences")
+        userInput = input("q - Save and quit \n")
+        if userInput =='e':
+            userPreference = preference()
+        elif userInput =='r':
+            recommendations(userName,publicTextData,userPreference)
+        elif userInput=='q':
+            if userName[-1]=='$':
+                savePreferences(userName,userPreference,privateTextData,privateTextFile)
+            else:
+                savePreferences(userName,userPreference,publicTextData,publicTextFile)
+            n = False
+        elif userInput=='p':
+            artistLikingList=popularArtists(userName,publicTextData)
+            if len(artistLikingList)>=3:
+                print(artistLikingList[-1][1])
+                print(artistLikingList[-2][1])
+                print(artistLikingList[-3][1])
+            elif len(artistLikingList)==2:
+                print(artistLikingList[-1][1])
+                print(artistLikingList[-2][1])
+            elif len(artistLikingList)==1:
+                print(artistLikingList[-1][1])
+            else:
+                print('Sorry, no artists found.')
+        elif userInput=='h':
+            artistLikingList=popularArtists(userName,publicTextData)
+            if len(artistLikingList)==0:
+                print('Sorry, no artists found.')
+            else:
+                print(artistLikingList[-1][0])
+        elif userInput=='m':
+            mostLikes(publicTextData)
+        elif userInput == 'd':
+            deletion = deletePreferences(userPreference, userName)
+        elif userInput == 's':
+            print("Here are " + userName + "'s preferences:")
+            for artist in userPreference:
+                print(artist)
+        else:
+            n = True
+
